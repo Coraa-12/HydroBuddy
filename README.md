@@ -1,45 +1,98 @@
-# Hydration Reminder
+# **HydroBuddy** 🚰
 
-This project is a simple hydration reminder application that sends notifications to remind you to drink water at regular intervals. It also logs each reminder to a file and plays a sound to alert you.
+**HydroBuddy** is a simple yet effective hydration reminder application designed to help you stay hydrated throughout the day. It sends desktop notifications at regular intervals, plays a sound alert, and logs each reminder to a file.
+
+---
+
+## Features
+
+✅ Sends desktop notifications with motivational messages to remind you to drink water.  
+✅ Plays a customizable sound alert (`MGS_Alert.mp3`) to grab your attention.  
+✅ Logs each reminder to a file (`hydration_log.txt`) for tracking your hydration habits.  
+✅ Works seamlessly on both **Linux** and **Windows**.
+
+---
 
 ## Project Structure
 
-- [`app.py`](app.py): The main application script that sends notifications, logs reminders, and plays a sound.
+Here’s an overview of the key files in this project:
+
+- [`app.py`](app.py): The main application script responsible for sending notifications, logging reminders, and playing sound alerts.
 - [`hydration_log.txt`](hydration_log.txt): A log file that records the timestamp of each reminder.
-- [`run_reminder.sh`](run_reminder.sh): A shell script to activate the virtual environment and run the application.
+- [`run_reminder.sh`](run_reminder.sh): A shell script to activate the virtual environment and run the application (for Linux/Mac users).
+- [`run_reminder.bat`](run_reminder.bat): A batch script to run the application on Windows.
+
+---
 
 ## Requirements
 
-- Python 3.x
-- [`plyer`](.venv/lib/python3.12/site-packages/plyer/__init__.py) library for notifications
-- [`pygame`](.venv/lib/python3.12/site-packages/pygame/__init__.py) library for playing sound
+Before running the application, ensure you have the following installed:
+
+- **Python 3.x**
+- **Dependencies**:
+  - [`plyer`](https://github.com/kivy/plyer): For sending desktop notifications.
+  - [`pygame`](https://www.pygame.org/): For playing sound alerts.
+
+You can install the required libraries using the `requirements.txt` file.
+
+---
 
 ## Setup
 
-1. Create a virtual environment:
+### Step 1: Clone the Repository
 
-    ```sh
-    python3 -m venv .venv
-    ```
+```bash
+git clone https://github.com/yourusername/HydroBuddy.git
+cd HydroBuddy
+```
 
-2. Activate the virtual environment:
+---
 
-    ```sh
-    source .venv/bin/activate
-    ```
+### Step 2: Create and Activate a Virtual Environment
 
-3. Install the required libraries:
+### On Linux/Mac:
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
-    ```sh
-    pip install plyer pygame
-    ```
+---
 
-4. Ensure you have a sound file named [MGS_Alert.mp3](http://_vscodecontentref_/3) in the same directory as [app.py](http://_vscodecontentref_/4).
+### On Windows:
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+---
+
+## Step 3: Install Dependencies
+Install the required libraries using pip:
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## Step 4: Add the Sound File
+Ensure you have a sound file named [`MGS_Alert.mp3`](MGS_Alert.mp3) in the same directory as [`app.py`](app.py) You can replace this file with any .mp3 file of your choice.
 
 ## Usage
-
-To run the hydration reminder application, execute the [run_reminder.sh](http://_vscodecontentref_/5) script:
-
-```sh
+### Running the Application
+### On Linux/Mac:
+```bash
 ./run_reminder.sh
+```
 
+### On Windows:
+```bash
+run_reminder.bat
+```
+
+The application will notify you every 15 minutes to remind you to drink water. A log file [`hydration_log.txt`] will track all reminders.
+
+### Preview
+Here’s what the notification looks like in action:
+```markdown
+## Preview
+![Notification Preview](images/notification_preview.gif)
