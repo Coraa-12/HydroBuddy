@@ -19,13 +19,13 @@ def get_random_message():
 
 def log_reminder():
     # Use os.path to create a cross-platform log file path
-    log_file_path = os.path.join(os.getcwd(), "hydration_log.txt")
+    log_file_path = os.path.join(os.path.dirname(__file__), "hydration_log.txt")
     with open(log_file_path, "a") as log_file:
         log_file.write(f"Reminder sent at {datetime.now()}\n")
 
 def play_sound():
     # Use os.path to locate the sound file in a cross-platform way
-    sound_file_path = os.path.join(os.getcwd(), "MGS_Alert.mp3")
+    sound_file_path = os.path.join(os.path.dirname(__file__), "MGS_Alert.mp3")
     pygame.mixer.init()
     pygame.mixer.music.load(sound_file_path)
     pygame.mixer.music.play()
