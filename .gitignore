@@ -103,3 +103,5 @@ cython_debug/
 
 # VS Code
 .vscode/
+# Logs
+hydration_log.txt
