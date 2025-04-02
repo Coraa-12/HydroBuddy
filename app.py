@@ -3,7 +3,7 @@ from plyer import notification
 import pygame
 from datetime import datetime
 import random
-import os
+import os # TEST
 
 reminder_count = 0
 
