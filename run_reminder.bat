@@ -1,3 +1,4 @@
 @echo off
-python reminder.py
+echo Starting HydroBuddy...
+python hydrobuddy.py
 pause
