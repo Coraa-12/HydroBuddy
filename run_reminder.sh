@@ -1,4 +1,5 @@
 # Bash script for Linux
 #!/bin/bash
+echo "Starting HydroBuddy..."
 source .venv/bin/activate
-python3 reminder.py
+python3 hydrobuddy.py

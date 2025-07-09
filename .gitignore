@@ -106,3 +106,5 @@ cython_debug/
 # Logs
 hydration_log.txt
 test_reminder.py
+# Demo and temporary files
+demo_gui.py
