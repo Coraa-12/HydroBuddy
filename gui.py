@@ -103,7 +103,7 @@ class HydroBuddyGUI:
         self.interval_var = tk.StringVar(value="15")
         interval_spinbox = ttk.Spinbox(control_frame, from_=1, to=120, textvariable=self.interval_var, width=10)
         interval_spinbox.grid(row=1, column=1, sticky="e")
-        interval_spinbox.bind('', self.update_interval)
+        interval_spinbox.bind('<FocusOut>', self.update_interval)
 
         manual_btn = ttk.Button(control_frame, text="Send Reminder Now", command=self.send_manual_reminder)
         manual_btn.grid(row=2, column=0, columnspan=2, pady=(5, 0), sticky="ew")
