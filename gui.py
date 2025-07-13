@@ -53,81 +53,82 @@ class HydroBuddyGUI:
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
     
     def setup_gui(self):
-        """Set up the main GUI interface."""
-        # Create main frame
-        main_frame = ttk.Frame(self.root, padding="10")
-        main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
-        
-        # Configure grid weights
-        self.root.columnconfigure(0, weight=1)
+        """Set up the main GUI interface with a responsive layout."""
+        # --- Configure the root window's grid ---
+        # This makes the main_frame (in row 0, col 0) expand to fill the window
         self.root.rowconfigure(0, weight=1)
-        main_frame.columnconfigure(1, weight=1)
-        
-        # Title
+        self.root.columnconfigure(0, weight=1)
+
+        # --- Create main frame ---
+        main_frame = ttk.Frame(self.root, padding="10")
+        main_frame.grid(row=0, column=0, sticky="nsew") # nsew = north, south, east, west
+
+        # --- Configure the main_frame's grid ---
+        # Make the main content column expand horizontally
+        main_frame.columnconfigure(0, weight=1)
+        # Make the log history row (row 3) expand vertically
+        main_frame.rowconfigure(3, weight=1)
+
+        # --- Title ---
         title_label = ttk.Label(main_frame, text="🚰 HydroBuddy", font=("Arial", 16, "bold"))
+        # Use columnspan=2 to span across the two columns inside the frames below
         title_label.grid(row=0, column=0, columnspan=2, pady=(0, 20))
-        
-        # Status section
+
+        # --- Status section ---
         status_frame = ttk.LabelFrame(main_frame, text="Status", padding="10")
-        status_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
-        status_frame.columnconfigure(1, weight=1)
-        
-        ttk.Label(status_frame, text="Reminder Status:").grid(row=0, column=0, sticky=tk.W)
+        status_frame.grid(row=1, column=0, columnspan=2, sticky="ew", pady=(0, 10))
+        status_frame.columnconfigure(1, weight=1) # Let the status text expand
+
+        ttk.Label(status_frame, text="Reminder Status:").grid(row=0, column=0, sticky="w")
         self.status_label = ttk.Label(status_frame, text="Stopped", foreground="red")
-        self.status_label.grid(row=0, column=1, sticky=tk.W, padx=(10, 0))
-        
-        ttk.Label(status_frame, text="Reminders Sent:").grid(row=1, column=0, sticky=tk.W)
+        self.status_label.grid(row=0, column=1, sticky="ew", padx=(10, 0))
+
+        ttk.Label(status_frame, text="Reminders Sent:").grid(row=1, column=0, sticky="w")
         self.count_label = ttk.Label(status_frame, text="0")
-        self.count_label.grid(row=1, column=1, sticky=tk.W, padx=(10, 0))
-        
-        ttk.Label(status_frame, text="Next Reminder:").grid(row=2, column=0, sticky=tk.W)
+        self.count_label.grid(row=1, column=1, sticky="ew", padx=(10, 0))
+
+        ttk.Label(status_frame, text="Next Reminder:").grid(row=2, column=0, sticky="w")
         self.next_reminder_label = ttk.Label(status_frame, text="Not scheduled")
-        self.next_reminder_label.grid(row=2, column=1, sticky=tk.W, padx=(10, 0))
-        
-        # Control section
+        self.next_reminder_label.grid(row=2, column=1, sticky="ew", padx=(10, 0))
+
+        # --- Control section ---
         control_frame = ttk.LabelFrame(main_frame, text="Controls", padding="10")
-        control_frame.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
-        control_frame.columnconfigure(1, weight=1)
-        
-        # Start/Stop button
+        control_frame.grid(row=2, column=0, columnspan=2, sticky="ew", pady=(0, 10))
+        control_frame.columnconfigure(0, weight=1) # Let the buttons expand
+
         self.start_stop_btn = ttk.Button(control_frame, text="Start Reminders", command=self.toggle_reminders)
-        self.start_stop_btn.grid(row=0, column=0, columnspan=2, pady=(0, 10), sticky=(tk.W, tk.E))
-        
-        # Interval setting
-        ttk.Label(control_frame, text="Reminder Interval (minutes):").grid(row=1, column=0, sticky=tk.W)
+        self.start_stop_btn.grid(row=0, column=0, columnspan=2, sticky="ew", pady=(0, 5))
+
+        ttk.Label(control_frame, text="Reminder Interval (minutes):").grid(row=1, column=0, sticky="w")
         self.interval_var = tk.StringVar(value="15")
         interval_spinbox = ttk.Spinbox(control_frame, from_=1, to=120, textvariable=self.interval_var, width=10)
-        interval_spinbox.grid(row=1, column=1, sticky=tk.W, padx=(10, 0))
+        interval_spinbox.grid(row=1, column=1, sticky="e")
         interval_spinbox.bind('<FocusOut>', self.update_interval)
-        
-        # Manual reminder button
+
         manual_btn = ttk.Button(control_frame, text="Send Reminder Now", command=self.send_manual_reminder)
-        manual_btn.grid(row=2, column=0, columnspan=2, pady=(10, 0), sticky=(tk.W, tk.E))
-        
-        # Log section
+        manual_btn.grid(row=2, column=0, columnspan=2, pady=(5, 0), sticky="ew")
+
+        # --- Log section ---
         log_frame = ttk.LabelFrame(main_frame, text="Reminder History", padding="10")
-        log_frame.grid(row=3, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S), pady=(0, 10))
-        log_frame.columnconfigure(0, weight=1)
+        # Make the log frame fill all available space (horizontal and vertical)
+        log_frame.grid(row=3, column=0, columnspan=2, sticky="nsew", pady=(0, 10))
+        # Configure grid inside the log_frame to make the text widget expand
         log_frame.rowconfigure(0, weight=1)
-        main_frame.rowconfigure(3, weight=1)
-        
-        # Create log text widget with scrollbar
+        log_frame.columnconfigure(0, weight=1)
+
         self.log_text = scrolledtext.ScrolledText(log_frame, height=10, state=tk.DISABLED)
-        self.log_text.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
-        
-        # Buttons frame
+        self.log_text.grid(row=0, column=0, sticky="nsew")
+
+        # --- Buttons frame ---
         buttons_frame = ttk.Frame(main_frame)
-        buttons_frame.grid(row=4, column=0, columnspan=2, pady=(10, 0))
-        
+        buttons_frame.grid(row=4, column=0, columnspan=2, sticky="e")
+
         refresh_btn = ttk.Button(buttons_frame, text="Refresh Log", command=self.load_log_history)
         refresh_btn.pack(side=tk.LEFT, padx=(0, 10))
-        
         clear_btn = ttk.Button(buttons_frame, text="Clear Log", command=self.clear_log)
         clear_btn.pack(side=tk.LEFT, padx=(0, 10))
-        
         settings_btn = ttk.Button(buttons_frame, text="Settings", command=self.open_settings)
         settings_btn.pack(side=tk.LEFT, padx=(0, 10))
-        
         if TRAY_AVAILABLE:
             minimize_btn = ttk.Button(buttons_frame, text="Minimize to Tray", command=self.minimize_to_tray)
             minimize_btn.pack(side=tk.LEFT)
